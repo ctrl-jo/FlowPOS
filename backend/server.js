@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 const { PrismaClient } = require('@prisma/client');
 
 // Load environment variables
@@ -14,6 +15,9 @@ const prisma = new PrismaClient();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Export prisma early so controllers can import it
+module.exports = { prisma };
+
 // ---------------------
 // Global Middleware
 // ---------------------
@@ -23,6 +27,7 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
+app.use(cookieParser());
 
 // ---------------------
 // Health check
@@ -34,8 +39,10 @@ app.get('/api/health', (req, res) => {
 // ---------------------
 // API Routes
 // ---------------------
-// Routes will be mounted here as they are implemented in later phases:
-// app.use('/api/auth',         require('./src/routes/auth'));
+const authRoutes = require('./src/routes/auth');
+app.use('/api/auth', authRoutes);
+
+// Future routes (uncomment as implemented):
 // app.use('/api/business',     require('./src/routes/business'));
 // app.use('/api/products',     require('./src/routes/products'));
 // app.use('/api/categories',   require('./src/routes/categories'));
@@ -48,7 +55,7 @@ app.get('/api/health', (req, res) => {
 // Global error handler
 // ---------------------
 app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err.stack);
+  console.error('Unhandled error:', err.message);
   res.status(500).json({ error: 'Internal server error' });
 });
 
@@ -64,7 +71,7 @@ async function main() {
       console.log(`🚀 FlowPOS API running on http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error('❌ Failed to start server:', error);
+    console.error('❌ Failed to start server:', error.message);
     process.exit(1);
   }
 }
@@ -77,6 +84,3 @@ process.on('SIGINT', async () => {
   console.log('🔌 Prisma disconnected');
   process.exit(0);
 });
-
-// Export for use in route files
-module.exports = { prisma };

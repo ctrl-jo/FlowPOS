@@ -57,7 +57,7 @@ Visit http://localhost:5173
 ## Roadmap
 - [x] Project skeleton and architecture
 - [x] Phase 1: Database schema (Prisma + PostgreSQL)
-- [ ] Phase 2: Auth API (register, login, JWT refresh)
+- [x] Phase 2: Auth API (register, login, JWT refresh)
 - [ ] Phase 3: Products and categories CRUD
 - [ ] Phase 4: Transactions and reports
 - [ ] Phase 5: AI endpoints (organizer + insights)
