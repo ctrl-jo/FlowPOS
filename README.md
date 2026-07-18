@@ -85,7 +85,7 @@ Areas where help is most needed:
 ## License
 This project is licensed under the MIT License — see the [LICENSE](./LICENSE) file for full details.
 
-Copyright (c) 2025 Joseph Mercado
+Copyright (c) 2026 Joseph Mercado
 
 ## Built by
 Joseph Mercado - Information Technology student, Philippines.
